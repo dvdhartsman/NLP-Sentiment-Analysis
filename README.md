@@ -8,30 +8,47 @@ Andrew Hendricks (andrewhhendricks@gmail.com)
 Find our non-technical presentation [here](https://docs.google.com/presentation/d/12J7u8S0OZltTBgUNQsBwZ3RKaHuetXo6/edit?usp=sharing&ouid=106491021188736703963&rtpof=true&sd=true).
 
 ## Overview
-In the age of social media, organizations have access to more data than ever about how the public is engaging with their products and brands. Using text classification to process all of that data into useable insights gives organizations the opportunity to incorporate public perceptions into their operations in new and unprecedented ways.
+Social media provides organizations with more data than ever about how the public is engaging with their products and brands. Using text classification to process all of that data into useable insights gives organizations the opportunity to incorporate public perceptions into their operations in new and unprecedented ways.
 
 In this project, we take on the role of a consulting firm creating an NLP text classification prototype that we are pitching to the heads of the analytics and operations teams for SXSW 2024. We use Twitter data from the 2013 SXSW conference to create a model that classifies positive, negative, and neutral Tweet sentiment. We conclude by sharing ideas for how the SXSW operations team could use the results of our model to enhance future conferences and ideas for next steps.
 
 ## Business Problem and Data
-The stakeholders for this project are the SXSW 2024 operations team and analytics team, and the business problem is developing a model that classifies Tweets based on positive, negative, or neutral sentiment. Based on the business context, we developed three separate models: a binary model to classify positive Tweets, a binary model to classify negative Tweets, and a multi-class model to classify positive, negative, and neutral Tweets. We trained these models on 8,936 labeled Tweets that came from the SXSW 2013 conference. The Tweets referenced products and presentations by Apple and Google. 60% of the Tweets were labeled as neutral, 33% were positive, and 6% were negative.
+The stakeholders for this project are the SXSW 2024 operations team and analytics team, and the business problem is developing a model that classifies Tweets based on positive, negative, or neutral sentiment. Based on the business context, we develop three separate models: a binary model to classify positive Tweets, a binary model to classify negative Tweets, and a multi-class model to classify positive, negative, and neutral Tweets. We train these models on 8,936 labeled Tweets from the 2013 SXSW conference. The Tweets reference products from Apple and Google, and 60% of them are labeled neutral, 33% are positive, and 6% are negative. 
 
-CELL 9
+Only about a third of the records original records include brand labels. While we do not use the brand labels in our models, we impute the missing brands using keywords from the Tweet text to allow us to disaggregate the data by brands in future analyses.
 
-Only about a third of the records original records included brand labels. While we did not use the brand labels in our models, we imputed the missing brands using keywords from the Tweet text so that we would have the ability to disaggregate the data by brands in future analyses.
+<img width="419" alt="Screenshot 2023-10-25 140158" src="https://github.com/dvdhartsman/NLP-Sentiment-Analysis/assets/141271148/91885d05-61d0-47f2-a7e1-5e335acd0227">
 
-CELL 16
+Before modeling, we create a preprocessing function to prepare the Tweets for classification. The function uses a regex pattern and tokenizer to tokenize each Tweet. After tokenization, the function lower cases each token and removes stopwards and punctuation from the token list. The function then applies part of speech tags to each of the tokens before using the WordNetLemmatizer to lemmatize them. 
 
-The purpose of our first model is to detect positive Tweets. The operations team could use this to share positive public response with participating companies, which they could repost on their social media accounts. It would also allow the operations team to publicize positive reactions to the event, which could be useful in attracting top level companies to present at SXSW in the future.  For positive Tweet classification, we used a one-versus-rest binary classification model that maximizes precision because we wanted to make sure that if the operations team is sharing positive social media posts or statistics with companies or publicing them on their own social media accounts that the Tweets actually are positive.
+<img width="506" alt="Screenshot 2023-10-25 142043" src="https://github.com/dvdhartsman/NLP-Sentiment-Analysis/assets/141271148/7037a72f-e7cf-429f-ae70-8e8196e29584">
 
-We designed our second model to detect negative Tweets. Once again, we used a one-versus-rest binary classification model, but for this model, we focused on recall score to optimize the percentage of actually negative Tweets that the model detects. The operations team could use this model during the week of the conference to detect operational issues that people are complaining about publicly on social media. For instance, if attendees are posting online about long lines or overflowing garbage or a lack of seating, the opertaions team could identify the posts, address the issues, and post responses to maintain the positive image of the conference.
 
-Finally, we designed our third model as a multi-class classifier to distinguish between positive, negative, and neutral Tweets. Our key metric for this model was accuracy score to make sure the model classifies Tweet sentiment with the greatest possible overall accuracy. The operations team could use this model to gain insights about public reaction to the products and presentations that companies share throughout the conference. This would allow the team both to share these insights with companies to help them quantify the impact of presenting at SXSW on social media response. The analysis could also be used internally to factor into the decision of determining which companies to prioritize recruiting for future conferences along with any companies that may have generated negative response and should not be invited back. 
+## Modeling
 
-problem Because of the nature of the problem, my model predicts whether someone will get an H1N1 vaccine, and I use accuracy as my most important classification metric. There is no domain-specific need for the model to do a better job at avoiding false positives or false negatives, so my goal is to create a model that is as accurate as I can make it.
-This analysis is based on the prompt from the Driven Data Flu Shot Competition. The data for the analysis was hosted there as well. The survey that the data comes from was conducted during 2009. The survey was conducted using random digit dialing and targeted all people ages 6 months and older. The survey contained over 26,000 records.
+Our project includes three models that are each intended to serve different use cases. To develop each of the models, we use an iterative approach that includes Multinomial Naive Bayes, Random Forest, logistic regression, ADA Boost, and XG Boost models. For each model type, we try separate models using count vectorization and TFIDF vectorization. We also try models that use SMOTE to address the imbalance in the data.
 
-All of the columns in the data set could be treated as categoricals. After data cleaning, I used one hot encoding on all non-binary columns. I used a simple imputer set to most frequent to handle null values.
-Modeling
+The purpose of our first model is to detect positive Tweets. The operations team could use this to share positive public response with participating companies, which they could repost on their social media accounts, or to publicize positive reactions to the event to attract new companies to present at SXSW in the future.  For positive Tweet classification, we use a one-versus-rest binary classification model and maximize precision because we wanted to make sure that if the operations team is sharing positive social media posts or statistics with companies or publicing them on their own social media accounts that the Tweets actually are positive. 
+
+Here is the ROC-AUC curve for our top 5 models:
+![precision_top_5](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/assets/141271148/8a6cb247-9dee-4995-a862-82e181aa64ba)
+
+Our strongest model for this purpose is a Mutlinomial Naive Bayes classifier that uses tfidf vectorization. The model precision for train data is 68% and the precision for test data is 73%. Of the Tweets that it classified as positive, 163 actually were positive and 59 were false positives.
+
+![conf_mat_precision_winner](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/assets/141271148/af39d80e-042c-473a-ba53-c329e2a4b4ef)
+
+![individual_precision_winner_OVR](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/assets/141271148/af6d5cc3-2415-4cd2-9625-971d54cd94ab)
+
+Our second model detects negative Tweets to support the operations team in detecting operational issues that people are complaining about publicly on social media and responding efficiently. Once again, we use a one-versus-rest binary classification model, but for this model, we focus on recall score to optimize the percentage of actually negative Tweets that the model detects. We chose this metric because we want to minimize the negative Tweets that the model does not detect.
+
+Here is the ROC-AUC curve for our top 5 models:
+
+Our strongest model for this purpose is a Mutlinomial Naive Bayes classifier that uses tfidf vectorization. The model precision for train data is 68% and the precision for test data is 73%. Of the Tweets that it classified as positive, 163 actually were positive and 59 were false positives.
+
+Finally, our third model is a multi-class classifier that distinguishes between positive, negative, and neutral Tweets. The operations team could use this model to gain insights about public reaction to the products and presentations that companies share throughout the conference. This would allow the team both to share these insights with companies to help them quantify the impact of presenting at SXSW on social media response. The analysis could also be used internally to factor into the decision of determining which companies to prioritize recruiting for future conferences along with any companies that may have generated negative response and should not be invited back. Given the purpose of the model, our key metric is accuracy score to make sure . 
+
+
+
 For my model, class 1 was that someone got the H1N1 vaccine and class 0 was that they did not. I used test train split to train and test my model and used pipelines to handle one hot encoding and simple imputing. My most important classification metric was the accuracy score, but I also reviewed precision, recall, F1, ROC AUC, and log loss when evaluating the preformance of my models.
 My first model was a dummy classifier. The majority class within the data set was class zero at 79%, so the classifier had a 79% accuracy score.
 
