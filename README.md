@@ -34,17 +34,17 @@ Our project includes three models that are each intended to serve different use 
 The purpose of our first model is to detect positive Tweets. The operations team could use this to share positive public response with participating companies, which they could repost on their social media accounts, or to publicize positive reactions to the event to attract new companies to present at SXSW in the future.  For positive Tweet classification, we use a one-versus-rest binary classification model and maximize precision because we wanted to make sure that if the operations team is sharing positive social media posts or statistics with companies or publicing them on their own social media accounts that the Tweets actually are positive. 
 
 Here is the ROC-AUC curve for our top 5 models:
+
 ![precision_top_5](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/assets/141271148/8a6cb247-9dee-4995-a862-82e181aa64ba)
 
 Our strongest model for this purpose is a Mutlinomial Naive Bayes classifier that uses TF-IDF vectorization. The model precision for train data is 68% and the precision for test data is 73%. Of the Tweets that it classified as positive, 163 actually were positive and 59 were false positives.
 
 ![conf_mat_precision_winner](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/assets/141271148/af39d80e-042c-473a-ba53-c329e2a4b4ef)
 
-![individual_precision_winner_OVR](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/assets/141271148/af6d5cc3-2415-4cd2-9625-971d54cd94ab)
-
 Our second model detects negative Tweets to support the operations team in detecting operational issues that people are complaining about publicly on social media and responding efficiently. Once again, we use a one-versus-rest binary classification model, but for this model, we focus on recall score to optimize the percentage of actually negative Tweets that the model detects. We use this metric because we want to minimize the negative Tweets that the model does not detect.
 
 Here is the ROC-AUC curve for our top 5 models:
+
 ![download](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/assets/141271148/d602ce08-5af8-48c3-b414-b11c5d6b2a0f)
 
 Our strongest model for this purpose is a Mutlinomial Naive Bayes classifier that uses TF-IDF vectorization and SMOTE. The model recall for train data is 98% and the recall for test data is 63%. Of the Tweets labeled as negative, it correctly classifies 90 as negative and incorrectly classifies 52.
