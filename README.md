@@ -8,9 +8,10 @@ Andrew Hendricks (andrewhhendricks@gmail.com)
 Find our non-technical presentation [here](https://docs.google.com/presentation/d/12J7u8S0OZltTBgUNQsBwZ3RKaHuetXo6/edit?usp=sharing&ouid=106491021188736703963&rtpof=true&sd=true).
 
 Instructions for navigating the repo:
-- Lemmatization_binary-modeling.ipynb - contains code for our preprocessing and binary models
-- One_vs_rest.ipynb - contains code for our positive classification models and negative classification models
-- Multiclass_analysis.ipynb - contains code for our mutli-class classification model
+- [Lemmatization_binary-modeling.ipynb](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/blob/main/EDA%20Notebooks/Lemmatization_binary-modeling.ipynb) - contains code for our preprocessing and binary models
+- [One_vs_rest.ipynb](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/blob/main/EDA%20Notebooks/One_vs_rest.ipynb) - contains code for our positive classification models and negative classification models
+- [Multiclass_analysis.ipynb](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/blob/main/Multiclass_analysis.ipynb) - contains code for our mutli-class classification model
+- [Text_Classification_Final_Notebook.ipynb](https://github.com/dvdhartsman/NLP-Sentiment-Analysis/blob/main/Text_Classification_Final_Notebook.ipynb) - contains a condensed version of the project to highlight most successful models and overall process
 
 ## Overview
 Social media provides organizations with more data than ever about how the public is engaging with their products and brands. Using text classification to process all of that data into useable insights gives organizations the opportunity to incorporate public perceptions into their operations in new and unprecedented ways.
